@@ -239,13 +239,6 @@ def pretreatment_arch(program_name):
     log('The framework of the program is:',framework)
     return framework
 
-def p(address):
-    global framework
-    if framework=='amd64':
-        return p64(address)
-    elif framework=='i386':
-        return p32(address)
-    
 def tcache_struct_attack(writes:list,address={}):
     """这个函数目前只适用于2.27的libc版本中"""
     """两个参数都为列表 第一个必须要有 第二个则可以没有"""
