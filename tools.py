@@ -374,7 +374,7 @@ def obstack_orw1_attack(heap_addr:int,libc_symbols_address:list)->bytes:
     
     :return: 构造好的payload
     
-    svcudp_reply:是svcudp_reply+26的地址如下：
+    svcudp_reply:是svcudp_reply+26的地址如下 (注意：在glibc2.23和2.27的版本中应该是+22并非+26)
     <svcudp_reply+26>:    mov    rbp,QWORD PTR [rdi+0x48]
 	<svcudp_reply+30>:    mov    rax,QWORD PTR [rbp+0x18]
 	<svcudp_reply+34>:    lea    r13,[rbp+0x10]
@@ -440,7 +440,7 @@ def obstack_orw2_attack(heap_addr,libc_symbols_address)->bytes:
 
     :return: 构造好的payload
     
-    svcudp_reply:是svcudp_reply+26的地址如下：
+    svcudp_reply:是svcudp_reply+26的地址如下(注意：在glibc2.23和2.27的版本中应该是+22并非+26)
     <svcudp_reply+26>:    mov    rbp,QWORD PTR [rdi+0x48]
 	<svcudp_reply+30>:    mov    rax,QWORD PTR [rbp+0x18]
 	<svcudp_reply+34>:    lea    r13,[rbp+0x10]
